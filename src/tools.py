@@ -145,6 +145,30 @@ def validate_trip(employee_id, trip_type, amount, time):
     }
 
 
+def calculate_reimbursement(trip_amount, policy_limit):
+    reimbursement_amount = min(
+        trip_amount,
+        policy_limit
+    )
+
+    review_amount = max(
+        trip_amount - policy_limit,
+        0
+    )
+
+    if trip_amount <= policy_limit:
+        status = "Within Limit"
+    else:
+        status = "Needs Approval"
+
+    return {
+        "trip_amount": trip_amount,
+        "policy_limit": policy_limit,
+        "reimbursement_amount": reimbursement_amount,
+        "review_amount": review_amount,
+        "status": status
+    }
+
 if __name__ == "__main__":
 
     test_cases = [
@@ -163,3 +187,12 @@ if __name__ == "__main__":
         )
 
         print(result)
+
+    print("\nReimbursement:")
+
+    result = calculate_reimbursement(
+        2500,
+        2000
+    )
+
+    print(result)
